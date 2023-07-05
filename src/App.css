@@ -1,0 +1,79 @@
+#root {
+  max-width: 1280px;
+  margin: 0 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardsContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.stationCard {
+  background-color: #343434;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.stationTitle {
+  font-size: 1.7rem;
+  color: #fff;
+  width: 100%;
+  background-color: #555555;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.stationTitle:hover {
+  background-color: #aaa;
+}
+
+
+.sensorInfoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.infoLabel {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #858585;
+}
+
+.infoText {
+  font-size: 1.4rem;
+}
+
+.chartsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.chartContainer{
+  border: 1px solid #343434;
+  padding: 0.5rem 1rem;
+}
