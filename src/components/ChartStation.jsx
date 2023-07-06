@@ -3,20 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { config } from '../config'
+import { io } from "socket.io-client";
+import { CSVLink } from "react-csv";
+import { ExportToExcel } from './ExportToExcel'
+
 
 const ChartStation = () => {
     const { station } = useParams()
     const navigate = useNavigate()
-
-    const options = {
-        backgroundColor: '#848484',
-        color: "#212121"
-    }
-
-
-    const [registers, setRegisters] = useState()
-    const [data, setData] = useState()
-    const [update, setUpdate] = useState(0)
 
     const digits = (num) => {
         let digit = num < 10 ? '0' + num : num + ''
@@ -28,6 +22,11 @@ const ChartStation = () => {
         let stringDate = fecha.getFullYear() + '-' + digits(fecha.getMonth() + 1) + '-' + digits(fecha.getDate())
         return stringDate
     }
+    const formatDate1 = (date) => {
+        const fecha = new Date(date)
+        let stringDate = fecha.getFullYear() + '-' + digits(fecha.getMonth() + 1) + '-' + digits(fecha.getDate() + 2)
+        return stringDate
+    }
 
     const formatTime = (date) => {
         const time = new Date(date)
@@ -35,30 +34,87 @@ const ChartStation = () => {
         return stringTime
     }
 
-    const getRegisters = () => {
-        let url = config.db.baseurl + 'registers/' + station
+
+    const options = {
+        backgroundColor: '#848484',
+        color: "#212121"
+    }
+
+
+    const [registers, setRegisters] = useState()
+    const [allRegisters, setAllRegisters] = useState([])
+    const [csv, setCsv] = useState([])
+    const [data, setData] = useState()
+    const [update, setUpdate] = useState(0)
+    const [download, setDownload] = useState(false)
+    const [fetching, setFetching] = useState(false)
+    const [from, setFrom] = useState(formatDate(new Date()))
+    const [to, setTo] = useState(formatDate(new Date()))
+
+
+    const getRegistersRange = (from, toDate) => {
+        console.log(from)
+        console.log(formatDate1(toDate))
+        let to = formatDate1(toDate)
+        let url = config.db.baseurl + 'registers/' + station + '/date?'
+            + 'from=' + from
+            + '&to=' + to
         console.log(url)
+        setFetching(true)
         axios.get(url)
             .then(response => {
                 console.log(response.data)
                 setRegisters(response.data)
+                setFetching(false)
             })
             .catch(err => console.log(err.data))
     }
 
-    const formatRegisters = () => {
-        let data = registers?.map((reg, index) => ({ date: formatDate(reg.createdAt), time: formatTime(reg.createdAt), co: reg.values.CO, ox: reg.values.OX }))
-        console.log(data)
-        setData(data)
+    const getAllRegisters = () => {
+        let url = config.db.baseurl + 'registers/' + station
+        console.log(url)
+        setFetching(true)
+        axios.get(url)
+            .then(response => {
+                console.log(response.data)
+                setAllRegisters(response.data)
+                setFetching(false)
+            })
+            .catch(err => console.log(err.data))
     }
 
-    useEffect(() => {
-        getRegisters()
-    }, [update])
+    const formatData = (data) => {
+        let dataformat = data?.map((reg, index) => ({ date: formatDate(reg.createdAt), time: formatTime(reg.createdAt), co: reg.values.CO, ox: reg.values.OX }))
+        return dataformat
+    }
+    const formatCsv = (data) => {
+        let csvformat = data?.map((reg, index) => ({ Nodo: station, fecha: formatDate(reg.createdAt), hora: formatTime(reg.createdAt), co: reg.values.CO, ox: reg.values.OX }))
+        return csvformat
+    }
+
 
     useEffect(() => {
-        formatRegisters()
+        const socket = io("http://localhost:3500")
+        socket.on("update", (msj) => {
+            console.log(msj)
+            getRegistersRange(from, to)
+        })
+    }, [])
+
+    useEffect(() => {
+        console.log(from)
+        console.log(to)
+        getRegistersRange(from, to)
+    }, [from, to])
+
+    useEffect(() => {
+        setData(formatData(registers))
     }, [registers])
+
+    useEffect(() => {
+        setCsv(formatCsv(allRegisters))
+    }, [allRegisters])
+
 
 
 
@@ -67,14 +123,56 @@ const ChartStation = () => {
             <button
                 className='HomeButton'
                 onClick={() => navigate('/')}
+                disabled={download && fetching}
             >Home</button>
 
             <button
                 className='HomeButton'
-                onClick={() => setUpdate(update + 1)}
+                onClick={() => getRegistersRange()}
+                disabled={download && fetching}
             >Actualizar</button>
 
+            {!allRegisters.length > 0 &&
+                <button
+                    onClick={() => getAllRegisters()}
+                    disabled={download && fetching}
+                >Obtener todos los datos</button>
+            }
+            {allRegisters.length > 0 &&
+                <ExportToExcel
+                    apiData={csv}
+                    fileName={`${station}`}
+                    station={station}
+                    setDownload={setDownload}
+                    fetching={fetching}
+                />
 
+                // <CSVLink
+                //     className='downLoadBtn'
+                //     data={csv}
+                //     filename={`${station}.csv`}
+                // // headers={headers}
+                // >
+                //     Descargar CSV
+                // </CSVLink>
+            }
+
+            <div className="dateContainer">
+                <div className="dateField">
+                    <label htmlFor="">Desde:</label>
+                    <input type="date"
+                        value={from}
+                        onChange={(e) => setFrom(e.target.value)}
+                    />
+                </div>
+                <div className="dateField">
+                    <label htmlFor="">Hasta:</label>
+                    <input type="date"
+                        value={to}
+                        onChange={(e) => setTo(e.target.value)}
+                    />
+                </div>
+            </div>
 
             <h1>{station}</h1>
 

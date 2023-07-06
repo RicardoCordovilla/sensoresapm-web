@@ -2,12 +2,14 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { config } from '../config'
 import { useNavigate } from 'react-router'
+import { io } from "socket.io-client";
 
 const StationCard = ({ info }) => {
-    console.log(info)
+    // console.log(info)
     const navigate = useNavigate()
 
     const [itemInfo, setItemInfo] = useState()
+    const [dbUpdated, setDbUpdated] = useState(0)
 
     const digits = (num) => {
         let digit = num < 10 ? '0' + num : num + ''
@@ -33,7 +35,7 @@ const StationCard = ({ info }) => {
             console.log(url)
             axios.get(url)
                 .then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     setItemInfo(response.data)
                 })
                 .catch(err => console.log(err.response.data))
@@ -43,6 +45,12 @@ const StationCard = ({ info }) => {
 
     useEffect(() => {
         getItemInfo()
+        const socket = io("http://localhost:3500")
+        socket.on("update", (msj) => {
+            console.log(msj)
+            // setDbUpdated(dbUpdated + 1)
+            getItemInfo()
+        })
     }, [])
 
     return (
