@@ -1,7 +1,12 @@
 export const config = {
 
     db: {
-        baseurl: 'https://apmsensores-production.up.railway.app/api/v1/',
-        // baseurl: 'http://localhost:9000/api/v1/',
+        // railway----------------------
+        // baseurl0: 'https://apmsensores-production.up.railway.app:3500',
+        // baseurl: 'https://apmsensores-production.up.railway.app/api/v1/',
+
+        // local------------------------
+        baseurl0: 'http://localhost:3500',
+        baseurl: 'http://localhost:9000/api/v1/',
     }
 }

@@ -2,7 +2,11 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { config } from '../config'
 import { useNavigate } from 'react-router'
-import { io } from "socket.io-client";
+// import io from "socket.io-client";
+// const socketurl = config.db.baseurl0
+// console.log(socketurl)
+// const socket = io(socketurl)
+
 
 const StationCard = ({ info }) => {
     // console.log(info)
@@ -38,19 +42,24 @@ const StationCard = ({ info }) => {
                     // console.log(response.data)
                     setItemInfo(response.data)
                 })
-                .catch(err => console.log(err.response.data))
+                .catch(err => console.log(err))
         }
     }
 
 
     useEffect(() => {
         getItemInfo()
-        const socket = io("http://localhost:3500")
-        socket.on("update", (msj) => {
-            console.log(msj)
-            // setDbUpdated(dbUpdated + 1)
-            getItemInfo()
-        })
+        // const socket = io("http://localhost:3500")
+
+        // socket.emit('join', 'web')
+
+        // socket.on("update", (msj) => {
+        //     console.log(msj)
+        //     // setDbUpdated(dbUpdated + 1)
+        //     getItemInfo()
+        // })
+        const interval = setInterval(() => getItemInfo(), 1000);
+        return () => clearInterval(interval);
     }, [])
 
     return (

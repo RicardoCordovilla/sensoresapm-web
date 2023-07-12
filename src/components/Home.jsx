@@ -15,7 +15,7 @@ const Home = () => {
                 // console.log(response.data)
                 setStations(response.data)
             })
-            .catch(err => console.log(err.response.data))
+            .catch(err => console.log(err))
     }
 
 

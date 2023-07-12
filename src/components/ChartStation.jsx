@@ -6,6 +6,8 @@ import { config } from '../config'
 import { io } from "socket.io-client";
 import { CSVLink } from "react-csv";
 import { ExportToExcel } from './ExportToExcel'
+import { BiHome } from 'react-icons/bi';
+import { PiMicrosoftExcelLogo } from 'react-icons/pi';
 
 
 const ChartStation = () => {
@@ -94,12 +96,19 @@ const ChartStation = () => {
 
 
     useEffect(() => {
-        const socket = io("http://localhost:3500")
-        socket.on("update", (msj) => {
-            console.log(msj)
-            getRegistersRange(from, to)
-        })
-    }, [])
+        // const socket = io(config.db.baseurl0)
+        // console.log(config.db.baseurl0)
+        // socket.on("update", (msj) => {
+        //     console.log(msj)
+        //     getRegistersRange(from, to)
+        // })
+        if (!allRegisters.length > 0) {
+            console.log('all registers')
+            const interval = setInterval(() => getRegistersRange(from, to), 1000);
+            return () => clearInterval(interval);
+        }
+
+    }, [allRegisters])
 
     useEffect(() => {
         console.log(from)
@@ -120,42 +129,49 @@ const ChartStation = () => {
 
     return (
         <div className=''>
-            <button
-                className='HomeButton'
-                onClick={() => navigate('/')}
-                disabled={download && fetching}
-            >Home</button>
 
-            <button
-                className='HomeButton'
-                onClick={() => getRegistersRange()}
-                disabled={download && fetching}
-            >Actualizar</button>
+            <div className="navContainer">
 
-            {!allRegisters.length > 0 &&
                 <button
-                    onClick={() => getAllRegisters()}
+                    className='navButton'
+                    onClick={() => navigate('/')}
                     disabled={download && fetching}
-                >Obtener todos los datos</button>
-            }
-            {allRegisters.length > 0 &&
-                <ExportToExcel
-                    apiData={csv}
-                    fileName={`${station}`}
-                    station={station}
-                    setDownload={setDownload}
-                    fetching={fetching}
-                />
+                > <BiHome />Inicio</button>
 
-                // <CSVLink
-                //     className='downLoadBtn'
-                //     data={csv}
-                //     filename={`${station}.csv`}
-                // // headers={headers}
-                // >
-                //     Descargar CSV
-                // </CSVLink>
-            }
+                {/* <button
+                className='HomeButton'
+                onClick={() => getRegistersRange(from, to)}
+                disabled={download && fetching}
+            >Actualizar</button> */}
+
+                {!allRegisters.length > 0 &&
+                    <button
+                        className='navButton'
+                        onClick={() => getAllRegisters()}
+                        disabled={download && fetching}
+                    >Obtener todos los datos <PiMicrosoftExcelLogo /></button>
+                }
+                {allRegisters.length > 0 &&
+                    <ExportToExcel
+                        apiData={csv}
+                        fileName={`${station}`}
+                        station={station}
+                        setDownload={setDownload}
+                        fetching={fetching}
+                    />
+
+                    // <CSVLink
+                    //     className='downLoadBtn'
+                    //     data={csv}
+                    //     filename={`${station}.csv`}
+                    // // headers={headers}
+                    // >
+                    //     Descargar CSV
+                    // </CSVLink>
+                }
+
+            </div>
+
 
             <div className="dateContainer">
                 <div className="dateField">

@@ -1,6 +1,8 @@
 import React from 'react'
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import { BiDownload } from 'react-icons/bi';
+
 
 export const ExportToExcel = ({ apiData, fileName, station, setDownload, fetching }) => {
   const fileType =
@@ -20,6 +22,6 @@ export const ExportToExcel = ({ apiData, fileName, station, setDownload, fetchin
   };
 
   return (
-    <button onClick={(e) => exportToCSV(apiData, fileName)} disabled={fetching}>Export</button>
+    <button onClick={(e) => exportToCSV(apiData, fileName)} disabled={fetching} className='navButton'>Descargar Excel <BiDownload /></button>
   );
 };
