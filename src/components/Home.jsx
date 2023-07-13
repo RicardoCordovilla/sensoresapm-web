@@ -3,7 +3,7 @@ import StationCard from './StationCard'
 import axios from 'axios'
 import { config } from '../config'
 
-const Home = () => {
+const Home = ({ user }) => {
 
     const [stations, setStations] = useState()
 
@@ -12,7 +12,7 @@ const Home = () => {
         console.log(url)
         axios.get(url)
             .then(response => {
-                // console.log(response.data)
+                console.log(response.data)
                 setStations(response.data)
             })
             .catch(err => console.log(err))
@@ -26,6 +26,9 @@ const Home = () => {
     return (
 
         <>
+            <h2
+            style={{marginTop:"2rem"}}
+            >Bienvenido {user}</h2>
 
             <div className='cardsContainer'>
                 {

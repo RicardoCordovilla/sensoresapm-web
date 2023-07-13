@@ -2,6 +2,12 @@
   max-width: 1280px;
   margin: 0 0;
   padding: 0;
+
+  --fondo: #999999;
+  --fondoDatos: #666666;
+  --texto: #323c8c;
+  --colorLinea: #121212;
+  --chartbackcolor: #c8ecfa
 }
 
 .App {
@@ -16,16 +22,71 @@ body {
   align-items: center;
 }
 
+
+.logoContainer {
+  width: 200px;
+  height: 200px;
+  /* background-color: #d3d0d0; */
+  margin: auto;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+.logo {
+  width: 100%;
+}
+
+
+.inputField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: #858585;
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+}
+
+.loginField {
+  color: #222222;
+  background-color: #fff;
+  font-size: 1.5rem;
+  padding: 0.4rem 0.8rem;
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
+
+.submit {
+  border: 2px solid transparent;
+  background-color: #20810c;
+  color: #d3d0d0;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.submit:hover {
+  background-color: #1d508a;
+  transition: all 0.3s ease;
+}
+
+
+
 .cardsContainer {
   padding: 2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 2rem;
+  color: var(--texto);
 }
 
 .stationCard {
-  background-color: #343434;
+  background-color: var(--fondoDatos);
   padding: 1rem 2rem;
   border-radius: 1rem;
   display: flex;
@@ -59,8 +120,8 @@ body {
 
 .infoLabel {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: #858585;
+  /* font-weight: 500; */
+  color: #dfdfdf;
 }
 
 .infoText {
@@ -130,6 +191,7 @@ body {
 
 
 .chartContainer {
+  background-color: var(--chartbackcolor);
   border: 1px solid #343434;
   padding: 0.5rem 1rem;
 }

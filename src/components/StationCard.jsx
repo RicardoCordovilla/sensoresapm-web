@@ -70,12 +70,16 @@ const StationCard = ({ info }) => {
             >{info?.title}</span>
 
             <div className="sensorInfoContainer">
-                <span className='infoLabel'>CO:</span>
-                <span className='infoText'>{itemInfo ? itemInfo?.values?.CO : 'sin datos'}</span>
+                <span className='infoLabel'>HA:</span>
+                <span className='infoText'>{itemInfo ? itemInfo?.values?.HA : 'sin datos'}</span>
             </div>
             <div className="sensorInfoContainer">
-                <span className='infoLabel'>OX:</span>
-                <span className='infoText'>{itemInfo ? itemInfo?.values?.OX : 'sin datos'}</span>
+                <span className='infoLabel'>TA:</span>
+                <span className='infoText'>{itemInfo ? itemInfo?.values?.TA : 'sin datos'}</span>
+            </div>
+            <div className="sensorInfoContainer">
+                <span className='infoLabel'>TS:</span>
+                <span className='infoText'>{itemInfo ? itemInfo?.values?.TS : 'sin datos'}</span>
             </div>
             <div className="sensorInfoContainer">
                 <span className='infoLabel'>Fecha:</span>

@@ -86,11 +86,11 @@ const ChartStation = () => {
     }
 
     const formatData = (data) => {
-        let dataformat = data?.map((reg, index) => ({ date: formatDate(reg.createdAt), time: formatTime(reg.createdAt), co: reg.values.CO, ox: reg.values.OX }))
+        let dataformat = data?.map((reg, index) => ({ date: formatDate(reg.createdAt), time: formatTime(reg.createdAt), ha: reg.values.HA, ta: reg.values.TA, ts: reg.values.TS }))
         return dataformat
     }
     const formatCsv = (data) => {
-        let csvformat = data?.map((reg, index) => ({ Nodo: station, fecha: formatDate(reg.createdAt), hora: formatTime(reg.createdAt), co: reg.values.CO, ox: reg.values.OX }))
+        let csvformat = data?.map((reg, index) => ({ Nodo: station, fecha: formatDate(reg.createdAt), hora: formatTime(reg.createdAt), ha: reg.values.HA, ta: reg.values.TA, ts: reg.values.TS }))
         return csvformat
     }
 
@@ -134,7 +134,7 @@ const ChartStation = () => {
 
                 <button
                     className='navButton'
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/home')}
                     disabled={download && fetching}
                 > <BiHome />Inicio</button>
 
@@ -195,14 +195,16 @@ const ChartStation = () => {
             <div className="chartsContainer">
 
                 <div className="chartContainer">
-                    <h3>Datos CO</h3>
+                    <h3>Datos Humedad ambiental</h3>
                     <LineChart width={800} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }} >
-                        <Line type="monotone" dataKey="co" stroke="#8884d8"
+                        <Line type="monotone" dataKey="ha"
+                            stroke={config.styles.linecolor}
+                            strokeWidth={config.styles.linewidth}
                             animationDuration={500}
                         />
                         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                         <XAxis dataKey="time" />
-                        <YAxis dataKey={"co"} />
+                        <YAxis dataKey={"ha"} />
                         <Tooltip animationDuration={200}
                             itemStyle={options}
                             contentStyle={options}
@@ -211,14 +213,34 @@ const ChartStation = () => {
                 </div>
 
                 <div className="chartContainer">
-                    <h3>Datos OX</h3>
+                    <h3>Datos Temperatura ambiental</h3>
                     <LineChart width={800} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                        <Line type="monotone" dataKey="ox" stroke="#8884d8"
+                        <Line type="monotone" dataKey="ta"
+                            stroke={config.styles.linecolor}
+                            strokeWidth={config.styles.linewidth}
                             animationDuration={500}
                         />
                         <CartesianGrid stroke="#ccc" strokeDasharray="10 10" />
                         <XAxis dataKey="time" />
-                        <YAxis />
+                        <YAxis dataKey={"ta"} />
+                        <Tooltip animationDuration={200}
+                            itemStyle={options}
+                            contentStyle={options}
+                        />
+                    </LineChart>
+                </div>
+
+                <div className="chartContainer">
+                    <h3>Datos temperatura suelo</h3>
+                    <LineChart width={800} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                        <Line type="monotone" dataKey="ts"
+                            stroke={config.styles.linecolor}
+                            strokeWidth={config.styles.linewidth}
+                            animationDuration={500}
+                        />
+                        <CartesianGrid stroke="#ccc" strokeDasharray="10 10" />
+                        <XAxis dataKey="time" />
+                        <YAxis dataKey={"ts"} />
                         <Tooltip animationDuration={200}
                             itemStyle={options}
                             contentStyle={options}
