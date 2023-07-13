@@ -102,13 +102,19 @@ const ChartStation = () => {
         //     console.log(msj)
         //     getRegistersRange(from, to)
         // })
-        if (!allRegisters.length > 0) {
-            console.log('all registers')
-            const interval = setInterval(() => getRegistersRange(from, to), 1000);
-            return () => clearInterval(interval);
-        }
+        // if (!allRegisters.length > 0) {
+        const interval = setInterval(() => {
+            setUpdate(update => update + 1)
+        }, 1000);
+        return () => clearInterval(interval);
 
-    }, [allRegisters])
+    }, [])
+
+    useEffect(() => {
+        console.log(update)
+        getRegistersRange(from, to)
+
+    }, [update])
 
     useEffect(() => {
         console.log(from)

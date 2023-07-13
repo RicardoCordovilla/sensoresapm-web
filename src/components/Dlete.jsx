@@ -4,8 +4,8 @@ import { config } from '../config'
 
 const Dlete = () => {
 
-    const from =100
-    const to = 200
+    const from =200
+    const to = 250
 
     useEffect(() => {
         for (let i = from; i < to; i++) {

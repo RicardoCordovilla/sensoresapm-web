@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 
 
 const StationCard = ({ info }) => {
-    // console.log(info)
+    console.log(info)
     const navigate = useNavigate()
 
     const [itemInfo, setItemInfo] = useState()
@@ -39,7 +39,7 @@ const StationCard = ({ info }) => {
             console.log(url)
             axios.get(url)
                 .then(response => {
-                    // console.log(response.data)
+                    console.log(response.data)
                     setItemInfo(response.data)
                 })
                 .catch(err => console.log(err))
