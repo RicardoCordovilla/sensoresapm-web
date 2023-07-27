@@ -96,17 +96,19 @@ const ChartStation = () => {
 
 
     useEffect(() => {
-        // const socket = io(config.db.baseurl0)
-        // console.log(config.db.baseurl0)
-        // socket.on("update", (msj) => {
-        //     console.log(msj)
-        //     getRegistersRange(from, to)
-        // })
-        // if (!allRegisters.length > 0) {
-        const interval = setInterval(() => {
-            setUpdate(update => update + 1)
-        }, 1000);
-        return () => clearInterval(interval);
+
+        const socket = io(config.db.baseurl0)
+        console.log(config.db.baseurl0)
+        socket.on("update", (msj) => {
+            console.log(msj)
+            getRegistersRange(from, to)
+        })
+
+        // const interval = setInterval(() => {
+        //     setUpdate(update => update + 1)
+        // }, 1000);
+        // return () => clearInterval(interval);
+
 
     }, [])
 
